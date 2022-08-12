@@ -1,0 +1,140 @@
+{% extends "base.html" %} 
+
+
+{% block title %}DjangoNatours | All Tours{% endblock%}
+
+
+{% block banner_content %}
+  <div id='img' data-img='{{bannerImage}}' class="h-[55vh]  lg:h-[80vh] md:h-[60vh] flex items-center justify-center relative" style="z-index:-1; width:100%;">
+
+    <img class="w-full h-full object-cover object-center absolute bottom-0 left-0 top-0" src="{{banner.url}}" alt="{{data.name}}">
+    <div class="absolute w-full h-full opacity-70 bg-gradient-to-r from-purple-400 to-to-purple-500">&nbsp;</div>
+
+
+    <div class="relative flex justify-center items-center text-center h-full text-3xl leading-[3.5rem] text-white capitalize tracking-widest" style="font-weight:bold; text-shadow: 2px 2px 4px #000000; z-index:2;" >
+      welcome to Django Natours
+    </div>
+
+  </div>
+
+{% endblock %}
+
+{% block content %}
+<div class="text-4xl text-center tracking-widest uppercase bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent" style="font-weight:bold; padding:4rem 0rem">All Tours</div>
+
+<div
+  style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); margin-bottom:3rem; padding-top:1.5rem;"
+  class="grid gap-x-4 gap-y-4 px-2 md:gap-x-8 md:px-8 lg:gap-x-[6rem] lg:px-[12rem] mx-auto  py-5"
+>
+
+{% for tour in data %}
+   <div class="flex flex-col rounded overflow-hidden bg-white transition-all shadow-xl py-4">
+
+   <!-- header part section on -->
+    <div class="bg-[#fff] relative">
+
+      <div class=" h-[22rem] relative" style="clip-path: polygon(0 0, 100% 0%, 100% 83%, 0% 98%);">
+<!--        <div class="absolute w-full h-full opacity-70 bg-gradient-to-r from-purple-200 to-to-purple-500">&nbsp;</div>-->
+
+        <img class="w-full h-full object-cover " src="{{tour.coverImage.url}}" alt="{{tour.name}}">
+      </div>
+
+      <h3 class="text-4xl text-right absolute bottom-4 z-10" style="width:20rem;right:.5rem;">
+        <span class="text-white uppercase py-4 px-6 bg-gradient-to-r from-purple-500 to-pink-500 box-decoration-clone leading-[3.5rem]">{{tour.name}}</span>
+      </h3>
+    </div>
+    <!-- end of header part section on -->
+  <!-- ===================section 2==========================    -->
+
+      <div class="grid grid-cols-[1fr,1fr] gap-y-7 gap-x-8 py-10 px-12">
+
+        <h4 class="col-span-full uppercase text-xl md:text-2xl font-light">
+
+          {% if tour.difficulty == 'difficult' %}
+            difficult {{tour.duration}}-day tour
+
+          {% elif tour.difficulty == 'medium' %}  
+           medium {{tour.duration}}-day tour
+
+          {% else %}  
+            easy {{tour.duration}}-day tour 
+
+
+          {% endif %} 
+          </h4>
+
+        <p class="col-span-full text-xl italic mt-[-1rem] mb-3">{{tour.summary}}</p>
+
+        <div class="flex items-center text-xl md:text-2xl">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 pr-1 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span>{{tour.startLocation.description}}</span>
+        </div>
+
+        <div class="flex items-center text-xl md:text-2xl">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 pr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span> {{tour.startDates}}</span>
+        </div>
+
+        <div class="flex items-center text-xl md:text-2xl">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 pr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+          </svg>
+          <span>{{tour.location|length}} stops</span>
+        </div>
+
+
+        <div class="flex items-center text-xl md:text-2xl">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 pr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          <span>{{tour.maxGroupSize}} people</span>
+        </div>
+
+      </div>
+
+
+  <!-- =================== end of section 2 | start of section 3 ==========================    -->
+
+
+
+      <div class="bg-[#f7f7f7] p-8 text-xl md:text-2xl border-t border-[#f1f1f1] grid grid-cols-[auto,1fr] items-center gap-4 mt-auto">
+
+          <p>
+            <span class="font-bold">$ {{ tour.price|stringformat:".2f" }}</span>    
+            <span class="text-[#999]">per person</span>
+          </p>
+
+          <p class="row-start-2 row-end-3">
+            <span class="font-bold">{{tour.ratingAvg}}</span>
+             <span class="text-[#999]">rating ({{tour.ratingQuantity}})</span>
+          </p>
+
+            <a class="justify-self-end self-center text-white bg-gradient-to-r from-purple-500 to-pink-500 tracking-wider
+            rounded-[10rem] uppercase no-underline font-light border-none cursor-pointer transition-all" href=" {{tour.slug}}" style="grid-column: 2/3;
+            grid-row: 1/2;
+            padding:1rem 1.5rem;
+            ">Details</a>
+
+      </div>
+          
+  <!-- =================== end of section 3==========================    -->
+    </div>
+    
+    {% endfor %}
+  </div>
+  
+  {% endblock %}
+  
+  {% comment %} <div class="bg-teal-700">04</div>
+  <div class="bg-purple-700">05</div>
+  <div class="bg-cyan-700">06</div>
+  <div class="bg-green-900">07</div>
+  <div class="bg-red-700">08</div>
+  <div class="bg-yellow-700">09</div> {% endcomment %}
+
+

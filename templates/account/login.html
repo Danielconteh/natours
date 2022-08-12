@@ -1,0 +1,59 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+
+
+<main class="flex items-center justify-center" style="min-height:80vh;">
+
+
+<div class="p-6 bg-gradient-to-r from-purple-500 to-pink-500 shadow-xl text-white flex items-center justify-center flex-col" style="padding:5rem 1rem;">
+
+<!--<h1>{% trans "Sign In" %}</h1>-->
+
+{% get_providers as socialaccount_providers %}
+
+{% if socialaccount_providers %}
+<h2 class="text-xl md:text-2xl capitalize tracking-widest">{% blocktrans with site.name as site_name %}sign in to django-natours to book a tour{% endblocktrans %}</h2>
+
+<div class="socialaccount_ballot">
+
+  <ul class="flex flex-col text-xl md:text-2xl p-6 tracking-wide socialaccount_providers">
+    {% comment %} {% include "socialaccount/snippets/provider_list.html" with process="login" %} {% endcomment %}
+
+    <a class="mb-6" href="{% provider_login_url 'google' %}">Login With Google</a>
+    <a class="mt-4" href="{% provider_login_url 'github' %}">Login With Github</a>
+
+  </ul>
+
+<!--  <div class="login-or">{% trans 'or' %}</div>-->
+
+</div>
+
+<!--{% include "socialaccount/snippets/login_extra.html" %}-->
+
+<!--{% else %}-->
+<!--<p>{% blocktrans %}If you have not created an account yet, then please-->
+<!--<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>-->
+<!--{% endif %}-->
+
+<!--<form class="login" method="POST" action="{% url 'account_login' %}">-->
+<!--  {% csrf_token %}-->
+<!--  {{ form.as_p }}-->
+<!--  {% if redirect_field_value %}-->
+<!--  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />-->
+<!--  {% endif %}-->
+<!--  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>-->
+<!--  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>-->
+<!--</form>-->
+
+
+  </div>
+
+</main>
+
+{% endblock %}

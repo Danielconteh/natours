@@ -1,0 +1,54 @@
+{% load static %}
+
+<div
+  class="card_container snap-x snap-mandatory"
+>
+   {% comment %} grid grid-flow-col{% for items in '01234567'|make_list %} {% endcomment %}
+
+
+  {% for review in review_data  %}
+  <p class="text-white">
+    {% comment %} {{review}} {% endcomment %}
+  </p>
+  <div class="review_card">
+    <div class="flex flex-col items-center justify-center center">
+
+      <!-- reveiw user image! -->
+      <img src="{{ review.image }}" alt="review photo"
+        class="mr-8 inline-block h-16 w-16 rounded-full ring-2 ring-white"
+      />
+      <!-- reveiw user name! -->
+
+      {% if review.name %}
+      <div class="text-2xl font-bold mt-4 italic">{{review.name|capfirst}}</div>
+      
+      {% else %}
+      <div class="text-2xl font-bold mt-4 italic">{{'user'|capfirst}}</div>
+
+      {% endif %}
+      
+      <!-- reveiw text -->
+      <p class="mt-8 mb-6 text-2xl italic leading-relaxed center">
+     
+        {{review.review_text}}
+       </p>
+       
+            {% comment %} {% for star in '12345'|make_list %}  {% endcomment %} 
+          <div class="test_container">
+            <div id="rating1" class="rating__overlay" data-rating='{{review.rating}}'>★★★★★</div>
+            <div id="rating1" class="rating__base">★★★★★</div>
+
+          </div>
+        </div>
+        
+      
+      
+
+  </div>
+
+  <!-- reviews stars -->
+ 
+  {% endfor %}
+  
+</div>
+

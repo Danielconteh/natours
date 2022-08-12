@@ -1,0 +1,75 @@
+<div class="booking_container relative">
+
+       {% for message in messages %} 
+
+        {% if message.tags == 'info' %} 
+        <div id="message1" data-messages="{{ message }}" class="pop_up skew-y-[4deg] text-center p-8 mb-6 text-4xl  capitalize absolute z-10" style="top:2rem; right:0rem;left:0; width:100%; padding:1.5rem .5rem"></div> 
+         {% endif %}
+
+      {% endfor %} 
+
+    <div class="skew-y-[4deg] bg-slate-300 shadow-xl rounded-md md:rounded-xl p-6 max-w-[150rem] h-[20rem] relative flex items-center overflow-x-hidden">
+
+
+        {% for img in imgs %} 
+        
+        {% if forloop.counter == 1%}
+        <img class="h-40 w-40 md:h-52 md:w-52 rounded-full absolute left-0" style="
+        transform: translate(-10%, 0%) scale(0.97);
+        z-index: 9;
+        " src="{{img.url}}" alt="booking_images">
+        {%endif%}
+
+        {% if forloop.counter == 2%}
+        <img class="h-40 w-40 md:h-52 md:w-52 rounded-full absolute left-0" style="
+        transform: translate(15%, 0%) scale(0.94);
+        z-index: 8;
+        " src="{{img.url}}" alt="booking_images">
+        {%endif%}
+
+        {% if forloop.counter == 3%}
+        <img class="h-40 w-40 md:h-52 md:w-52 rounded-full absolute left-0" style="
+        transform: translate(-35%, 0%);
+        z-index: 10;
+        " src="{{img.url}}" alt="booking_images"> 
+        {%endif%}
+
+        {% endfor %}
+
+
+
+        <div class="grid  ml-56" style=" grid-template-rows: auto auto;
+        grid-template-columns: 1fr auto;
+        grid-gap: 0.7rem 0.4rem;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;">
+
+            <div class="text-2xl uppercase bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent col-start-1 col-end-3 md:col-end-2">what are you waiting for?</div>
+
+            <p class="text-2xl text-slate-500 col-start-1 col-end-3 md:col-end-2">
+                10 days. 1 adventure. Infinite memories. Make it yours today!
+
+            </p>
+            <div class="pt-4 md:pt-0 md:px-8 md:row-span-full md:col-start-2">
+
+                {% if user.is_authenticated %}
+                <a href="/create-checkout-session/{{slug}}" type="submit" id="checkout-button" class=" bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-white p-4 text-xl capitalize">Book tour now!</a>
+         
+                
+                {% else %}
+                <a href="accounts/login/" class=" bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-white p-4 text-xl capitalize">login to book tour!</a>
+                {% endif %}
+
+            </div>
+
+        </div>
+        <!-- row-span-full col-span-full
+col-span-full -->
+    </div>
+    
+</div>
+
+
+
+

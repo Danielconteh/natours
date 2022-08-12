@@ -1,0 +1,177 @@
+{% load static %}
+{% load socialaccount %}
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block meta %}{% endblock%}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <title>{% block title %}{% endblock%}</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+  integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+  crossorigin=""/>
+  </head>
+
+  <style>
+    @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css);
+
+    .map {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .map::-webkit-scrollbar {
+      display: none; /* Safari and Chrome */
+    }
+ body {
+  scrollbar-width: thin;
+  scrollbar-color: dark;
+   max-width:140rem;
+   margin: 0rem auto;
+}
+
+body::-webkit-scrollbar {
+  width: 7px;
+}
+
+@media screen and (min-width: 87.5em) {
+  body {
+    margin:1rem auto !important;
+  }
+}
+
+  </style>
+  
+  <body onload="loadAuth();" class="overflow-x-hidden leading-[1.6] text-[#777]">
+    {% comment %} header section {% endcomment %}
+    <header class="bg-sky-800  py-4 flex justify-between items-center lg:text-3xl relative md:text-2xl" style="width:100%;">
+      <a
+        href="/"
+        class="ml-3 p-1.5 text-sky-200 no-underline uppercase tracking-widest md:tracking-wide"
+       style="margin-left:1rem; font-weight:bold;" >All tours</a
+      >
+      <a class="text-sky-200 p-1.5 hidden md:block" href="/">
+      <img  src="{% static 'image/logo.png' %}" alt="Django-Natours" srcset="" style="width: 5rem;">
+      </a>
+
+
+      {% if user.is_authenticated %}
+      <div class="user_img flex items-center text-sky-200 relative" style="cursor:pointer;" >
+        <div class="mr-4" style="font-weight:bold;">  
+          {% comment %} {{ user.user_image.image|default_if_none:user.user_image.photo }} {% endcomment %}
+
+
+        {% for account in user.socialaccount_set.all %}
+
+
+        {% if account.get_avatar_url %} 
+        <img class="rounded-full" src="{{ account.get_avatar_url }}" alt="{{  account.extra_data.first_name  }}" width="35" height="10"> 
+        {% elif account.get_picture %}
+        <img class="rounded-full" src="{{ account.get_picture }}" alt="{{  account.extra_data.first_name }}" width="35" height="10"> 
+        {% else %}
+        <img class="rounded-full" src="https://api.iconify.design/bi/person-circle.svg?color=%23bae6fd" alt="" srcset=""  width="30" height="10">
+        {% endif %}
+
+        </div>
+        {% if  account.extra_data.first_name %}
+        <p class="tracking-widest md:tracking-wide mr-8">{{ account.extra_data.first_name|capfirst}}</p>
+        
+        {% else %}
+        <p class="tracking-widest md:tracking-wide mr-8">{{ user|capfirst}}</p>
+
+        {% endif %}
+
+
+        {% endfor %} 
+
+
+
+    <div class="user_info bg-sky-800 absolute mr-8 rounded text-sky-200 flex flex-col items-center justify-around capitalize tracking-wider">
+        <a href="/success/" class="py-4">book tours</a>
+        <a href="/accounts/logout/" class="py-4" >logout</a>
+
+      </div> 
+
+    </div>
+      {% else %}
+      <a
+        href="/accounts/login/"
+        class="mr-8 text-sky-200 no-underline uppercase tracking-wide border-solid border border-sky-100 py-1.5 px-4  rounded-md hover:border-slate-400"
+        >sign in</a
+      >
+      {% endif %}
+
+     
+
+      
+      {% comment %} logout card {% endcomment %}
+
+     
+
+
+    </header>
+
+    {% comment %} BANNER SECTION {% endcomment %} 
+    {% block banner_content %} {%endblock %} 
+    {% block content %}{% endblock %}
+
+    <footer
+      class="bg-sky-800 p-[4rem] mt-4 mb-0  grid md:grid-cols-[auto,auto] gap-2 justify-center md:justify-between text-sky-200 sm:px-[1rem]"
+    >
+
+    
+      <div class="row-start-1 row-end-3 self-center text-center ml-6 md:text-left ml-0">
+          <img class="text-center"  src="{% static 'image/logo.png' %}" alt="Django-Natours" srcset="" style="width: 5rem; margin:1 auto;">
+
+        <span class="tracking-widest capitalize hidden md:block md:text-2xl"
+          >built using django</span
+        >
+      </div>
+      <ul
+        class="list-none mr-8 flex justify-center flex-col md:text-2xl md:justify-end md:flex-row mr-0"
+      >
+        <li class="ml-6 text-center py-4 md:py-0">
+          <a href="#">About us</a>
+        </li>
+        <li class="ml-6 text-center py-4 md:py-0">
+          <a href="#">Download apps</a>
+        </li>
+        <li class="ml-6 text-center py-4 md:py-0">
+          <a href="#">Become a guide</a>
+        </li>
+        <li class="ml-6 text-center py-4 md:py-0">
+          <a href="#">Careers</a>
+        </li>
+        <li class="ml-6 text-center py-4 md:py-0">
+          <a href="#">Contact</a>
+        </li>
+      </ul>
+      <p id="date" class="justify-self-end mr-8 md:mr-0 md:text-2xl md:center">
+        &copy; {% now "Y" as current_year %} Copyright {{ current_year }} by
+        Daniel Conteh.
+        <br />
+        <span class="mt-4 tracking-widest capitalize block text-center md:hidden center md:text-2xl"
+          >built using django</span
+        >
+      </p>
+    </footer>
+    {% block script_content %} {% endblock %}
+  </body>
+
+    
+  <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+  crossorigin=""></script>
+
+  <script>
+    function loadAuth() {
+      const google = document.forms[0].name === 'Google'
+      const github = document.forms[0].name === 'GitHub'
+
+      if(google) return document.forms['Google'].submit()
+      
+      if(github) return document.forms['GitHub'].submit()
+     
+    }
+  </script>
+  
+</html>

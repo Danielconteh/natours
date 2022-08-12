@@ -1,0 +1,217 @@
+<section
+  class="mt-[-11rem] lg:mt-[-9rem] bg-[#fcfcfc] pt-[4rem] grid grid-cols-[1fr,1fr]"
+>
+  <!-- CONTAIN QUICK FACT & TOUR GUIDES -->
+  {% include "tour/tour_info.html" with data=data next_date=next_date tour_guide=tour_guide %}
+  <!-- CONTAIN QUICK FACT & TOUR GUIDES -->
+
+  <!-- CONTAIN TOUR DES -->
+  {% include "tour/tour_des.html" with par_description=par_description tour_name=data.name%}
+  <!-- CONTAIN TOUR DES-->
+</section>
+
+<!-- IMAGES SECTION mt-[0rem] md:mt-[2rem] lg:mt-[-9rem]-->
+
+<section
+  class="mt-[0rem] md:mt-[2rem] lg:mt-[-9rem] py-12 grid skew-y-[-4deg]"
+  style="grid-template-columns: repeat(auto-fit, minmax(275px, 1fr))"
+>
+  <!-- CONTAIN TOUR IMAGES -->
+  {% include "tour/tour_images.html" with imgs=imgs name=data.name %}
+  <!-- CONTAIN TOUR IMAGES-->
+</section>
+
+<!-- CONTAIN TOUR MAP LOCATION -->
+<section class="skew-y-[-4deg] mt-[-3rem]">
+  {% include "tour/tour_map.html" %} {% comment %} {% block meta %} {%
+  endcomment %} {% comment %} {% endblock%} {% endcomment %}
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""
+  />
+
+  <script
+    src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""
+  ></script>
+</section>
+<!-- END OF CONTAIN TOUR MAP LOCATION -->
+
+<!-- CONTAIN TOUR REVIEW -->
+{% if review %}
+<section
+  class="bg-gradient-to-r from-pink-500 to-purple-500 skew-y-[-4deg] px-2 py-12">
+  {% include "tour/tour_review.html" with review_data=review  %}
+</section>
+{% endif %}
+
+<!-- END OF CONTAIN TOUR REVIEW -->
+
+<!-- TOUR BOOKING || LOGIN -->
+<!-- bg-gradient-to-r from-purple-400 to-pink-400  md:mb-20 bg-cyan-700 -->
+<section class="skew-y-[-4deg] bg-sky-800 md:mb-20">
+  {% include "tour/tour_booking.html" with imgs=imgs name=data.name slug=data.slug%}
+</section>
+
+
+<!-- END OF TOUR BOOKING || LOGIN -->
+
+
+{% comment %} WRIT REVIEW TEMPLATE bg-green-400  {% endcomment  %}
+<section class="skew-y-[-4deg] md:mb-20" style="padding: 4rem 1rem;">
+  {% include "tour/tour_write_review.html" with slug=data.slug %}
+</section>
+
+
+
+
+
+<!--js script load when needed-->
+
+{% block script_content %}
+<script>
+  const el = document.querySelector('#map')
+  const scroll = document.querySelector("#scroll-container")
+  const scroll_message = document.querySelector("#message")
+  const scroll_message1 = document.querySelector("#message1")
+
+
+  {% comment %} STAR RATING... {% endcomment %}
+
+  let showValue = document.querySelector('#rating-value');
+  let rating = document.querySelectorAll('[data-rating]');
+
+  let star = document.querySelectorAll('input');
+  
+  
+
+  let json = el.dataset.locations
+  let data = JSON.parse(json) //map data from collected from database
+
+
+
+  //resuable string formate
+  const stringFormater = (strData) =>
+    strData
+      .replaceAll('[', '')
+      .replaceAll(']', '')
+      .replace(/'|""/g, '')
+      .split(',')
+
+  const stringFormater2 = (strData) =>
+    strData.slice(1, -1).replaceAll(',', '').split(' ')
+
+  // container to stor coordinate & location description
+  let coord = []
+  let arr = []
+
+  const startLocation = stringFormater2(data.startLocation)
+  const day = stringFormater2(data.days) // day of tour [1,2,3]
+
+  const des = stringFormater(data.description) //function
+  const coords = stringFormater(data.coords) //function
+
+  coords.forEach((el) => {
+    arr.push(Number(el.trim()))
+    if (arr.length === 2) {
+      coord.push(arr)
+      arr = []
+    }
+  })
+
+  if (L) {
+    let map = L.map('map').setView(
+      [startLocation[0] * 1, startLocation[1] * 1],
+      7
+    )
+
+    mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>'
+
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; ' + mapLink + ' Contributors',
+      maxZoom: 18,
+    }).addTo(map)
+
+    for (let i = 0; i < coord.length; i++) {
+      new L.marker([coord[i][0], coord[i][1]])
+        .addTo(map)
+        .bindPopup(`${des[i]} day ${day[i]}`)
+    }
+    new L.marker([coord[0][0], coord[0][1]])
+      .addTo(map)
+      .bindPopup(`${des[0]} day ${day[0]}`)
+      .openPopup()
+  }
+
+
+  {% comment %} scroll to a specifiic message! {% endcomment %}
+
+  if(scroll && scroll_message){
+    scroll_message.textContent = '';
+    scroll_message.textContent = scroll_message?.dataset?.message;
+
+    //.classList.add("mystyle")
+
+    let timeOut = setTimeout(  () => {   
+       scroll.classList.add("pop_up_close");
+    }, 5000);
+
+    if(!scroll_message.textContent) {clearTimeout(timeOut);}
+
+
+    scroll_message.textContent && scroll.scrollIntoView({
+      behavior: 'smooth'
+    });
+    scroll_message.textContent && window.scroll(0,findPos(scroll));
+  }
+
+
+  if(scroll_message1){
+    scroll_message1.textContent = '';
+    window.addEventListener("load", ()=>{
+      alert(scroll_message1?.dataset?.messages || 'You have booked this tour!, please book another one!')
+    })
+    //scroll_message1.textContent = scroll_message1?.dataset?.message;
+
+    //data-message1
+  }
+
+
+
+  {% comment %} STAR RATING {% endcomment %}
+
+  if(star){
+
+    for (let i = 0; i < star.length; i++) {
+      star[i].addEventListener('click', function() {
+        i = this.value;
+    
+         showValue.textContent = i;
+        });
+    }
+
+  }
+
+
+  
+  
+  function rating_fun(elem, stars ) {
+    let cw = elem.clientWidth; // save original 100% pixel width
+    elem.style.width = Math.round(cw * (Number(stars / 5))) + 'px';
+  }
+
+  
+  
+  
+  if(rating){
+    for (let i = 0; i < rating.length; i++) {
+      rating_fun(rating[i],rating[i].dataset?.rating);      
+    }
+
+}
+
+</script>
+{% endblock %}

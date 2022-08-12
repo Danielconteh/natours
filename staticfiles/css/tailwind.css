@@ -1,0 +1,269 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========
+
+GLOBAL STYLE
+
+=============*/
+
+html {
+  font-size: 62.5%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  --scrollbarBG: #cfd8dc;
+  --thumbBG: #90a4ae;
+}
+
+body::-webkit-scrollbar {
+  width: 11px;
+}
+
+body {
+  scrollbar-width: thin;
+  scrollbar-color: dark;
+}
+
+/* ==========================
+
+===== */
+
+.tour_info_guide_header {
+  @apply text-4xl pb-8 uppercase bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent;
+}
+
+.tour_guide {
+  @apply uppercase font-bold text-xl mr-4;
+}
+
+.tour_guide_img {
+  @apply inline-block h-14 w-14 rounded-full ring-2 ring-white mr-2;
+}
+
+.tour_guide_wrapper {
+  @apply flex items-center;
+}
+
+.login_Container {
+  @apply relative h-[65vh] mt-4 flex justify-center items-center;
+}
+
+.login_card {
+  @apply rounded-md p-16 w-1/2 h-1/2;
+}
+
+
+.user_img:hover .user_info{
+  visibility:visible;
+  opacity:1;
+  transition: all .250ms ease-in;
+}
+
+.user_info{
+    padding:1rem 1rem;
+    right:0;
+    top:3rem;
+    min-height:15vh;
+    visibility:hidden;
+    opacity:0;
+    width:100%;
+    font-size:1.5rem;  
+    z-index: 1;
+}
+
+
+/* textarea */
+
+.textarea{
+  box-sizing: border-box;
+  height: 25rem;
+  width: 40%;
+
+  resize: none;
+}
+
+
+@media screen and (max-width: 50em) {
+  .textarea{
+   width: 80%;
+  }
+  
+ }
+
+@media screen and (max-width: 37.5em) {
+ .textarea{
+  width: 90%;
+ }
+ 
+}
+
+@media screen and (max-width: 21.875em) {
+  .textarea{
+   width: 95%;
+  }
+ 
+ }
+ textarea:focus {
+  border:  1px solid red;
+}
+
+ /* TOUR_WRITE */
+.tour_write{
+  min-height: 40vh;
+}
+
+
+/* POPUP */
+.pop_up{
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 0.2rem;
+  transition: all 350ms ease-in;
+  -webkit-transition: all 350ms ease-in;
+  -moz-transition: all 350ms ease-in;
+  -ms-transition: all 350ms ease-in;
+  -o-transition: all 350ms ease-in;
+}
+
+
+/* pop_up_close! */
+
+.pop_up_close{
+  visibility: hidden;
+  opacity: 0;
+  transition: all 350ms ease-out;
+  -webkit-transition: all 350ms ease-out;
+  -moz-transition: all 350ms ease-out;
+  -ms-transition: all 350ms ease-out;
+  -o-transition: all 350ms ease-out;
+}
+
+
+/* STAR RATING LOGIC  */
+
+
+
+
+/*styling star rating*/
+.rating{
+	border: none;
+	float: left;
+}
+
+.rating > input{
+	display: none;
+}
+
+.rating > label:before{
+	content: '\f005';
+	font-family: FontAwesome;
+	font-size: 2.5rem;
+  margin: 0 .5rem;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.rating > .half:before{
+	content: '\f089';
+	position: absolute;
+	cursor: pointer;
+}
+
+
+.rating > label{
+	color: #ddd;
+	float: right;
+	cursor: pointer;
+}
+
+.rating > .review_star:checked ~ label,
+.rating:not(:checked) > label:hover, 
+.rating:not(:checked) > label:hover ~ label{
+	color: #2ce679;
+}
+
+.rating > .review_star:checked + label:hover,
+.rating > .review_star:checked ~ label:hover,
+.rating > label:hover ~ .review_star:checked ~ label,
+.rating > .review_star:checked ~ label:hover ~ label{
+	color: #2ddc76;
+}
+
+/* review_card */
+
+.card_container{
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  min-height: 50vh;
+  padding: 4rem 1rem;
+  gap: 2rem;
+  align-items: center;
+  transform: skewY(4deg);
+  -webkit-transform: skewY(4deg);
+  -moz-transform: skewY(4deg);
+  -ms-transform: skewY(4deg);
+  -o-transform: skewY(4deg);
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.card_container::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+
+.review_card{
+  @apply bg-white rounded-lg py-14 px-8 shadow-2xl snap-always snap-center md:snap-align-none snap-x snap-mandatory;
+  min-height: 30vh;
+  width: 30rem;
+  flex: 0 0 auto;
+}
+
+
+/* booking_container */
+
+.booking_container{
+   @apply flex items-center justify-center relative;
+   min-height: 45vh;
+   padding: 3rem 0rem;
+}
+
+
+/* TESTING PURPOSE */
+
+/* .rating {
+  font-size: 48px;
+  color: gray;
+  display: inline-block; */
+  /* overflow: hidden; */
+/* } */
+.rating::before { 
+  content: "" 
+}
+
+
+.test_container{
+  position: relative;
+  font-size: 3.85rem;
+  display: inline-block;
+  line-height: 1em;
+}
+
+.rating__overlay {
+  color: rgb(7 89 133);
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.rating__base {
+  color: lightgray;
+  display: inline-block;
+  white-space: nowrap;
+}
+

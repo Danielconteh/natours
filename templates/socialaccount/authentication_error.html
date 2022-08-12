@@ -1,0 +1,18 @@
+{% extends "socialaccount/base.html" %}
+
+
+{% block title %}Authentication Error!{% endblock%}
+{% load i18n %}
+
+{% block head_title %}{% trans "Social Network Login Failure" %}{% endblock %}
+
+{% block content %}
+<main  class="flex flex-col items-center justify-center p-6" style="min-height:80vh;"> 
+<h1 class="text-3xl">{% trans "Social Network Login Failure" %}</h1>
+
+<p class="text-2xl mt-4">{% trans "An error occurred while attempting to login via your social network account." %}</p>
+
+<a  href="/accounts/login/" class="text-2xl p-4 mt-8 bg-gradient-to-r from-purple-500 to-pink-500 shadow-xl text-sky-200 rounded capitalize tracking-wider" type="submit">{% trans "go back" %}</a>
+
+</main>
+{% endblock %}
